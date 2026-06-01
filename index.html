@@ -1586,8 +1586,9 @@
       try {
         firebase.initializeApp(FIREBASE_CONFIG);
         const db = firebase.database();
-        fbMatchesRef = db.ref('matches');
-        fbMetaRef = db.ref('meta');
+        // Write under /app_data/ to match security rules
+        fbMatchesRef = db.ref('app_data/matches');
+        fbMetaRef = db.ref('app_data/meta');
         useFirebase = true;
         console.log('🔥 Firebase connecté');
       } catch (e) {
@@ -1709,7 +1710,6 @@
       loadLocal();
       initFirebase();
       if (useFirebase) {
-        // Fetch initial data from Firebase (overrides localStorage if newer)
         fbMatchesRef.once('value').then(snap => {
           if (snap.val()) { matches = snap.val(); saveLocal(); renderAll(); }
         });
